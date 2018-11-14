@@ -22,11 +22,27 @@
 <div class="container" >
     <%@ include file="../_include/header.jsp" %>
     <h2><s:text name="nav.messages" /></h2>
+<div class="row">
+    <div class="col-2">
+        <s:a action="message_list" class="btn btn-primary">
+            <s:param name="channelName" value="name" />
+            <s:text name="nav.refresh" /></s:a>
+     </div>
+    <div class="col-10">
+    <ul class="list-group list-group-flush">
+    <s:iterator value="listMessage">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                <s:property value="message"/> -> <s:property value="author"/>
+
+        </li>
 
 
+    </s:iterator>
 
-
+    </ul>
+</div>
+</div>
 </div>
 </body>
 </html>
-^'   

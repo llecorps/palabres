@@ -49,15 +49,26 @@
 
         <action name="channel_new"
                 class="org.lle.palabres.GestionChannelAction"
-                method="doList">
-            <result name="success">/jsp/channel/new.jsp</result>
-            <result name="error">/jsp/error.jsp</result>
+                method="doCreate">
+
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+
+            <result name="input">/jsp/channel/new.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">message_list</param>
+                <param name="channelName">${channel.name}</param>
+            </result>
+
         </action>
 
         <action name="message_list"
                 class="org.lle.palabres.GestionChannelAction"
                 method="doListMessage">
-            <result name="success">/jsp/channel/message.jsp</result>
+
+            <result name="success">/jsp/channel/messageList.jsp</result>
             <result name="error">/jsp/error.jsp</result>
         </action>
 
