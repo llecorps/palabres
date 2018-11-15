@@ -25,8 +25,9 @@
 <div class="row">
     <div class="col-2">
         <s:a action="message_list" class="btn btn-primary">
-            <s:param name="channelName" value="name" />
-            <s:text name="nav.refresh" /></s:a>
+           <s:text name="nav.refresh" />
+        </s:a>
+
      </div>
     <div class="col-10">
     <ul class="list-group list-group-flush">

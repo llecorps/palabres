@@ -72,5 +72,9 @@
             <result name="error">/jsp/error.jsp</result>
         </action>
 
+        <action name="reload" class="org.lle.palabres.GestionChannelAction" method="reload">
+            <result name="success"> /jsp/channel/messageList.jsp</result>
+        </action>
+
     </package>
 </struts>

@@ -1,6 +1,8 @@
 package org.lle.palabres;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.config.ConfigurationManager;
+import org.apache.struts2.dispatcher.Dispatcher;
 import org.example.palabres.model.bean.chat.Channel;
 import org.example.palabres.model.bean.chat.Message;
 import org.example.palabres.model.exception.FunctionalException;
@@ -69,10 +71,19 @@ public class GestionChannelAction extends ActionSupport {
     public String doListMessage() {
 
         Channel vChannel = new Channel();
-        vChannel.setName(channelName);
+
+        if (channelName != null) {
+            vChannel.setName(channelName);
+        }else {
+            vChannel.setName("Random");
+        }
+
+
+
 
         try {
             listMessage = WebappHelper.getManagerFactory().getChatManager().getListNewMessage(vChannel, null);
+            //String channelRefresh = vChannel.getName();
         } catch (NotFoundException e) {
             e.printStackTrace();
             return ActionSupport.ERROR;
@@ -107,5 +118,14 @@ public class GestionChannelAction extends ActionSupport {
         return vResult;
     }
 
+    public String reload(){
+
+        Channel vChannel = new Channel();
+        vChannel.setName(channelName);
+
+        ConfigurationManager configMan= Dispatcher.getInstance().getConfigurationManager();
+        configMan.reload();
+        return ActionSupport.SUCCESS;
+    }
 
 }
