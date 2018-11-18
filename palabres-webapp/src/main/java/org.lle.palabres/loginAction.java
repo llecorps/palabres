@@ -16,6 +16,24 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
 
     // ----- Eléments Struts
     private Map<String, Object> session;
+    private Utilisateur utilisateur;
+    private String pseudo;
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
 
     @Override
     public void setSession(Map<String, Object> pSession) {
@@ -57,6 +75,7 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
                     if (vUtilisateur.getPseudo().equals(login))  {
                         // Ajout de l'utilisateur en session
                         this.session.put("utilisateur", vUtilisateur);
+
                         vResult = ActionSupport.SUCCESS;
                     }
                 } catch (NotFoundException e) {
@@ -82,8 +101,8 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
         public String doLogout() {
 
 
-            // Invalidation de la session
-            this.servletRequest.getSession().invalidate();
+            WebappHelper.getManagerFactory().getUtilisateurManager().deleteUtilisateur((Utilisateur) this.session.get("utilistaeur"));
+           this.servletRequest.getSession().invalidate();
 
             return ActionSupport.SUCCESS;
         }

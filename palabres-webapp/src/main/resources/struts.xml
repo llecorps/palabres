@@ -21,6 +21,7 @@
         <action name="logout" class="org.lle.palabres.loginAction" method="doLogout">
             <result type="redirectAction">
                 <param name="actionName">index</param>
+
             </result>
         </action>
         <action name="account"
