@@ -3,13 +3,14 @@ package org.lle.palabres;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.config.ConfigurationManager;
 import org.apache.struts2.dispatcher.Dispatcher;
+import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.chat.Channel;
 import org.example.palabres.model.bean.chat.Message;
 import org.example.palabres.model.exception.FunctionalException;
 import org.example.palabres.model.exception.NotFoundException;
 import org.example.palabres.model.exception.TechnicalException;
-import org.example.palabres.webapp.WebappHelper;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ import java.util.List;
  */
 public class GestionChannelAction extends ActionSupport {
 
+    @Inject
+    private ManagerFactory managerFactory;
 
     private List<Channel> listChannel;
     public Channel channel;
@@ -64,7 +67,8 @@ public class GestionChannelAction extends ActionSupport {
 
     public String doList() {
 
-        listChannel = WebappHelper.getManagerFactory().getChatManager().getListChannel();
+
+        listChannel = managerFactory.getChatManager().getListChannel();
         return ActionSupport.SUCCESS;
     }
 
@@ -82,8 +86,9 @@ public class GestionChannelAction extends ActionSupport {
 
 
         try {
-            listMessage = WebappHelper.getManagerFactory().getChatManager().getListNewMessage(vChannel, null);
-            //String channelRefresh = vChannel.getName();
+
+            listMessage = managerFactory.getChatManager().getListNewMessage(vChannel, null);
+
         } catch (NotFoundException e) {
             e.printStackTrace();
             return ActionSupport.ERROR;
@@ -103,7 +108,8 @@ public class GestionChannelAction extends ActionSupport {
         if (this.channel != null) {
 
             try {
-                WebappHelper.getManagerFactory().getChatManager().addChannel(channel);
+
+                managerFactory.getChatManager().addChannel(channel);
                 vResult = ActionSupport.SUCCESS;
             } catch (FunctionalException e) {
                 e.printStackTrace();

@@ -5,16 +5,20 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.utilisateur.Utilisateur;
 import org.example.palabres.model.exception.NotFoundException;
-import org.example.palabres.webapp.WebappHelper;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class loginAction extends ActionSupport implements ServletRequestAware, SessionAware {
 
     // ----- Eléments Struts
+    @Inject
+    private ManagerFactory managerFactory;
+
     private Map<String, Object> session;
     private Utilisateur utilisateur;
     private String pseudo;
@@ -70,8 +74,8 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
                 Utilisateur vUtilisateur
                         = null;
                 try {
-                    vUtilisateur = WebappHelper.getManagerFactory().getUtilisateurManager()
-                    .getUtilisateur(login);
+
+                    vUtilisateur = managerFactory.getUtilisateurManager().getUtilisateur(login);
                     if (vUtilisateur.getPseudo().equals(login))  {
                         // Ajout de l'utilisateur en session
                         this.session.put("utilisateur", vUtilisateur);
@@ -101,7 +105,8 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
         public String doLogout() {
 
 
-            WebappHelper.getManagerFactory().getUtilisateurManager().deleteUtilisateur((Utilisateur) this.session.get("utilistaeur"));
+
+            managerFactory.getUtilisateurManager().deleteUtilisateur((Utilisateur) this.session.get("utilistaeur"));
            this.servletRequest.getSession().invalidate();
 
             return ActionSupport.SUCCESS;
