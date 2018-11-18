@@ -40,7 +40,7 @@
         <s:iterator value="listChannel">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <s:a action="message_list">
-                <s:param name="name" value="name" />
+                    <s:param name="channelName" value="name" />
                 <s:property value="name"/>
                 </s:a>
             </li>
@@ -68,7 +68,7 @@
 
     </s:if>
     <s:else>
-        Vous devez vous connecter!
+        <s:a action="login">Vous devez vous connecter!</s:a>
     </s:else>
 </div>
 </body>

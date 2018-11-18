@@ -23,6 +23,25 @@
     <%@ include file="../_include/header.jsp" %>
     <h2><s:text name="nav.newChannel" /></h2>
 
+    <s:if test="#session.utilisateur">
+
+
+
+        <s:form action="channel_new">
+
+            <s:textfield name="channel.name" label="Nom du Channel" requiredLabel="true" />
+
+
+            <s:submit value="OK"/>
+
+
+
+        </s:form>
+    </s:if>
+    <s:else>
+        <s:a action="login">Vous devez vous connecter!</s:a>
+    </s:else>
+
 
 
 

@@ -17,7 +17,9 @@
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Palabres</a>
+    <a class="navbar-brand">
+    <s:a action="index" class="nav-link"><s:text name="nav.index" /></s:a>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -25,28 +27,29 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             
-            <li class="nav-item active">
 
-                <s:a action="index" class="nav-link"><s:text name="nav.index" /></s:a> <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <s:a action="channel_list" class="nav-link"><s:text name="nav.channel" /></s:a> <span class="sr-only">(current)</span></a>
             </li>
-<!--
+
             <li class="nav-item">
-                <s:if test="#session.utilisateur">
-                    <s:a action="logout" class="nav-link">Logout</s:a>
-                </s:if>
-                <s:else>
-                    <s:a action="login" class="nav-link">Login</s:a>
-                </s:else>
+
                 <span class="sr-only">(current)</span></a>
             </li>
 
--->
+
 
         </ul>
+        <s:if test="#session.utilisateur">
+            Utilisateur connecté :
+            <s:property value="#session.utilisateur.pseudo" />
+            <s:a action="logout" ><s:text name="nav.goLout" />
 
+            </s:a>
+        </s:if>
+        <s:else>
+            Vous devez vous connecter!
+        </s:else>
 
 
 
