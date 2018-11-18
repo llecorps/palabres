@@ -33,8 +33,10 @@
     <ul class="list-group list-group-flush">
     <s:iterator value="listMessage">
         <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                <s:property value="message"/> -> <s:property value="author"/>
+            <span class="badge badge-primary badge-pill">
+            <s:property value="author"/>
+            </span>
+            <s:property value="message"/>
 
         </li>
 
