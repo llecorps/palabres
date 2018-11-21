@@ -5,16 +5,20 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.utilisateur.Utilisateur;
-import org.example.palabres.model.exception.NotFoundException;
-import org.example.palabres.webapp.WebappHelper;
+import org.example.palabres.model.exception.FunctionalException;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class loginAction extends ActionSupport implements ServletRequestAware, SessionAware {
 
     // ----- Eléments Struts
+    @Inject
+    private ManagerFactory managerFactory;
+
     private Map<String, Object> session;
     private Utilisateur utilisateur;
     private String pseudo;
@@ -67,20 +71,19 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
             String vResult = ActionSupport.INPUT;
             if (!StringUtils.isAllEmpty(login)) {
 
-                Utilisateur vUtilisateur
-                        = null;
+
                 try {
-                    vUtilisateur = WebappHelper.getManagerFactory().getUtilisateurManager()
-                    .getUtilisateur(login);
-                    if (vUtilisateur.getPseudo().equals(login))  {
+
+                    //vUtilisateur = managerFactory.getUtilisateurManager().getUtilisateur(login);
+                    Utilisateur vUtilisateur = new Utilisateur(login);
+                    managerFactory.getUtilisateurManager().addUtilisateur(vUtilisateur);
+
                         // Ajout de l'utilisateur en session
                         this.session.put("utilisateur", vUtilisateur);
 
                         vResult = ActionSupport.SUCCESS;
-                    }
-                } catch (NotFoundException e) {
-                    e.printStackTrace();
-                   // this.addActionError("Identifiant ou mot de passe invalide !");
+
+                } catch (FunctionalException pEx) {
                     vResult = ActionSupport.ERROR;
                 }
 
@@ -100,9 +103,14 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
          */
         public String doLogout() {
 
+            Object vUser = this.session.get("utilistaeur");
 
-            WebappHelper.getManagerFactory().getUtilisateurManager().deleteUtilisateur((Utilisateur) this.session.get("utilistaeur"));
-           this.servletRequest.getSession().invalidate();
+            if (vUser instanceof Utilisateur) {
+                managerFactory.getUtilisateurManager().deleteUtilisateur((Utilisateur) vUser);
+            }
+
+            this.servletRequest.getSession().invalidate();
+
 
             return ActionSupport.SUCCESS;
         }

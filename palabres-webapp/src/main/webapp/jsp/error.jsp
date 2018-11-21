@@ -1,59 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib prefix="c" uri="/struts-tags" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Error</title>
+    <%@ include file="_include/head.jsp"%>
 </head>
 
 <body>
-<%@ include file="menu.jsp" %>
-<s:actionerror/>
-<s:actionmessage />
+<h2><s:text name="error.title" /></h2>
 
-<div class="container">
+<s:actionerror />
 
-    <%@ include file="_include/header.jsp" %>
-
-
-
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Login</h5>
-                    <p class="card-text"> Tu as déjà ton pseudo.</p>
-                    <s:a action="login" class="btn btn-primary"><s:text name="nav.goChannel" /></s:a>
-
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Compte</h5>
-                    <p class="card-text">Créer ton pseudo </p>
-                    <s:a action="addLogin" class="btn btn-primary"><s:text name="nav.goChannel" /></s:a>
-
-
-
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-</div>
-
+<s:bean name="java.util.Date" var="now" />
+<s:text name="error.metadata">
+    <s:param value="now" />
+</s:text>
 </body>
 </html>
