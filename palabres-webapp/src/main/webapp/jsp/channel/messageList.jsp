@@ -5,45 +5,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Login</title>
-
-    <link href="<c:url value="/jsp/assets/css/bootstrap.css" />" rel="stylesheet">
-    <script src="<c:url value="/jsp/assets/js/jquery.js" />"></script>
-    <script src="<c:url value="/jsp/assets/js/bootstrap.min.js" />"></script>
-
-
-
+    <%@ include file="../_include/head.jsp" %>
 </head>
 <body>
-<%@ include file="../menu.jsp" %>
+    <%@ include file="../_include/header.jsp" %>
 
 
 <div class="container" >
-    <%@ include file="../_include/header.jsp" %>
-    <h2><s:text name="nav.messages" /></h2>
+
+    <h2><s:property value="channel.name" /></h2>
 <div class="row">
     <div class="col-2">
         <s:a action="message_list" class="btn btn-primary">
+            <s:param name="channelName"><s:property value="channel.name" /></s:param>
            <s:text name="nav.refresh" />
         </s:a>
 
      </div>
-    <div class="col-10">
-    <ul class="list-group list-group-flush">
-    <s:iterator value="listMessage">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="badge badge-primary badge-pill">
-            <s:property value="author"/>
-            </span>
-            <s:property value="message"/>
-
-        </li>
-
-
-    </s:iterator>
-
-    </ul>
+    <div id="channel-messages">
+        <s:iterator value="listMessage">
+            <div class="media mb-3 message">
+                <i class="far fa-user fa-2x m-1 mr-3"></i>
+                <div class="media-body">
+                    <h5 class="mt-1 mb-0 user"><s:property value="author.pseudo" /></h5>
+                    <span class="text"><s:property value="message" /></span>
+                </div>
+            </div>
+        </s:iterator>
+    </div>
 </div>
 </div>
 </div>

@@ -5,28 +5,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Login</title>
 
-    <link href="<c:url value="/jsp/assets/css/bootstrap.css" />" rel="stylesheet">
-    <script src="<c:url value="/jsp/assets/js/jquery.js" />"></script>
-    <script src="<c:url value="/jsp/assets/js/bootstrap.min.js" />"></script>
-
+    <%@ include file="../_include/head.jsp" %>
 
 
 </head>
 <body>
-<%@ include file="../menu.jsp" %>
+    <%@ include file="../_include/header.jsp" %>
 
 
 <div class="container" >
 
     <h2><s:text name="nav.listChannel" /></h2>
-    <s:if test="#session.utilisateur">
 
-    Utilisateur connecté :
-    <s:property value="#session.utilisateur.pseudo" />
-    <s:a action="logout" ><s:text name="nav.goLout" /></s:a>
+
 
     <div class="row">
 
@@ -66,10 +58,8 @@
     </div>
 
 
-    </s:if>
-    <s:else>
-        <s:a action="login">Vous devez vous connecter!</s:a>
-    </s:else>
+
 </div>
+    <%@ include file="../_include/scripts.jsp" %>
 </body>
 </html>

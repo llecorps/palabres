@@ -2,7 +2,9 @@ package org.lle.palabres;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.config.ConfigurationManager;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Dispatcher;
+import org.apache.struts2.interceptor.SessionAware;
 import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.chat.Channel;
 import org.example.palabres.model.bean.chat.Message;
@@ -12,11 +14,12 @@ import org.example.palabres.model.exception.TechnicalException;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by TheAdmin on 11.11.2018.
  */
-public class GestionChannelAction extends ActionSupport {
+public class GestionChannelAction extends ActionSupport implements SessionAware {
 
     @Inject
     private ManagerFactory managerFactory;
@@ -26,6 +29,8 @@ public class GestionChannelAction extends ActionSupport {
     private String channelName;
     private List<Message> listMessage;
     public Message pMessage;
+
+    private Map<String, Object> session;
 
     public String getChannelName() {
         return channelName;
@@ -62,42 +67,48 @@ public class GestionChannelAction extends ActionSupport {
         this.channel = channel;
     }
 
-
+    @Override
+    public void setSession(Map<String, Object> pSession) {
+        this.session = pSession;
+    }
 
 
     public String doList() {
 
+        String vRetour = ActionSupport.INPUT;
+        if (this.session.get("utilisateur") == null) {
+            vRetour = "error-forbidden";
+        } else if (StringUtils.isNotEmpty(channelName)) {
+            try {
+                channel = managerFactory.getChatManager().getChannel(channelName);
+            } catch (NotFoundException pE) {
+                this.addActionError(pE.getMessage());
+            }
+            vRetour = ActionSupport.SUCCESS;
+        } else {
+            listChannel = managerFactory.getChatManager().getListChannel();
+        }
+        return vRetour;
 
-        listChannel = managerFactory.getChatManager().getListChannel();
-        return ActionSupport.SUCCESS;
     }
 
-    public String doListMessage() {
+    public String doListMessage() throws TechnicalException {
 
-        Channel vChannel = new Channel();
-
-        if (channelName != null) {
-            vChannel.setName(channelName);
-        }else {
-            vChannel.setName("Random");
+        String vRetour = ActionSupport.ERROR;
+        if (this.session.get("utilisateur") == null) {
+            vRetour = "error-forbidden";
+        } else if (StringUtils.isNotEmpty(channelName)) {
+            try {
+                channel = managerFactory.getChatManager().getChannel(channelName);
+                listMessage = managerFactory.getChatManager().getListNewMessage(channel, null);
+                vRetour = ActionSupport.SUCCESS;
+            } catch (NotFoundException pE) {
+                this.addActionError(pE.getMessage());
+            }
+        } else {
+            this.addActionError("Channel non précisé !");
         }
-
-
-
-
-        try {
-
-            listMessage = managerFactory.getChatManager().getListNewMessage(vChannel, null);
-
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-            return ActionSupport.ERROR;
-        } catch (TechnicalException e) {
-            e.printStackTrace();
-            return ActionSupport.ERROR;
-        }
-
-        return ActionSupport.SUCCESS;
+        return vRetour;
     }
 
     public String doCreate() {
@@ -133,5 +144,6 @@ public class GestionChannelAction extends ActionSupport {
         configMan.reload();
         return ActionSupport.SUCCESS;
     }
+
 
 }

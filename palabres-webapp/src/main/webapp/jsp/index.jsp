@@ -4,14 +4,14 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Palabres</title>
+    <%@ include file="_include/head.jsp"%>
 </head>
 
 <body>
-<%@ include file="menu.jsp" %>
-<s:actionerror/>
-<s:actionmessage />
+    <%@ include file="_include/header.jsp"%>
+
 
 <div class="container">
 
@@ -19,7 +19,7 @@
 
 
 
-
+<!--
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -35,13 +35,13 @@
             </div>
         </div>
 
-
+-->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Login</h5>
-                        <p class="card-text">Créer ton pseudo </p>
-                        <s:a action="account" class="btn btn-primary"><s:text name="nav.goChannel" /></s:a>
+                        <p class="card-text">Connexion avec ton pseudo </p>
+                        <s:a action="login" class="btn btn-primary"><s:text name="nav.goChannel" /></s:a>
 
 
 
@@ -55,5 +55,6 @@
 
     </div>
 
+    <%@ include file="./_include/scripts.jsp" %>
 </body>
 </html>
