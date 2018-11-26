@@ -45,7 +45,7 @@
             <result name="input">/jsp/channel/list.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">message_list</param>
-                <param name="channelName">${channel.name}</param>
+                <param name="channel">${channel.name}</param>
             </result>
             <result name="error">/jsp/error.jsp</result>
         </action>
@@ -67,9 +67,6 @@
 
         </action>
 
-        <action name="reload" class="org.lle.palabres.GestionChannelAction" method="reload">
-            <result> /jsp/channel/messageList.jsp</result>
-        </action>
 
     </package>
 </struts>

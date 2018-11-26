@@ -1,9 +1,7 @@
 package org.lle.palabres;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.config.ConfigurationManager;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts2.dispatcher.Dispatcher;
 import org.apache.struts2.interceptor.SessionAware;
 import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.chat.Channel;
@@ -97,9 +95,9 @@ public class GestionChannelAction extends ActionSupport implements SessionAware 
         String vRetour = ActionSupport.ERROR;
         if (this.session.get("utilisateur") == null) {
             vRetour = "error-forbidden";
-        } else if (StringUtils.isNotEmpty(channelName)) {
+        } else if (StringUtils.isNotEmpty(channel.getName())) {
             try {
-                channel = managerFactory.getChatManager().getChannel(channelName);
+              //  channel = managerFactory.getChatManager().getChannel(channelName);
                 listMessage = managerFactory.getChatManager().getListNewMessage(channel, null);
                 vRetour = ActionSupport.SUCCESS;
             } catch (NotFoundException pE) {
@@ -135,15 +133,6 @@ public class GestionChannelAction extends ActionSupport implements SessionAware 
         return vResult;
     }
 
-    public String reload(){
-
-        Channel vChannel = new Channel();
-        vChannel.setName(channelName);
-
-        ConfigurationManager configMan= Dispatcher.getInstance().getConfigurationManager();
-        configMan.reload();
-        return ActionSupport.SUCCESS;
-    }
 
 
 }
