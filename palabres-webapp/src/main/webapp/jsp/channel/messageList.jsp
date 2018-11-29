@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-2">
         <s:a action="message_list" class="btn btn-primary">
-            <s:param name="channelName"><s:property value="channel.name" /></s:param>
+            <s:param name="channel"><s:property value="channel.name" /></s:param>
            <s:text name="nav.refresh" />
         </s:a>
 
@@ -36,5 +36,6 @@
 </div>
 </div>
 </div>
+<s:debug />
 </body>
 </html>

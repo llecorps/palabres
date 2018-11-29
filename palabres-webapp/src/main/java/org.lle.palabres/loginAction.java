@@ -103,7 +103,7 @@ public class loginAction extends ActionSupport implements ServletRequestAware, S
          */
         public String doLogout() {
 
-            Object vUser = this.session.get("utilistaeur");
+            Object vUser = this.session.get("utilisateur");
 
             if (vUser instanceof Utilisateur) {
                 managerFactory.getUtilisateurManager().deleteUtilisateur((Utilisateur) vUser);

@@ -3,7 +3,53 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <struts>
-    <package name="default" extends="struts-default">
+
+    <!-- ===== Package de configuration de base ===== -->
+    <package name="base" abstract="true" extends="struts-default">
+
+        <interceptors>
+
+            <interceptor name="auth" class="org.lle.palabres.interceptor.AuthInterceptor" />
+
+            <interceptor-stack name="applicationDefaultStack">
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                    <param name="exception.logCategory">org.lle.palabres.webapp</param>
+                </interceptor-ref>
+            </interceptor-stack>
+
+            <interceptor-stack name="authenticatedStack">
+                <interceptor-ref name="auth" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="Exception" type="httpheader">
+                <param name="error">500</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">%{exception}</param>
+            </result>
+            <result name="TechnicalException" type="httpheader">
+                <param name="error">500</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">Erreur technique - %{exception.message}</param>
+            </result>
+            <result name="NotFoundException" type="httpheader">
+                <param name="error">404</param>
+                <param name="parse">true</param>
+                <param name="errorMessage">Objet introuvable - %{exception.message}</param>
+            </result>
+            <result name="error">/jsp/error.jsp</result>
+            <result name="error-forbidden" type="httpheader">
+            <param name="error">403</param>
+        </result>
+        </global-results>
+    </package>
+
+
+    <package name="public" extends="base">
         <!-- Action par défaut -->
         <default-action-ref name="index" />
 
@@ -38,10 +84,16 @@
             </result>
             <result name="error">/jsp/error.jsp</result>
         </action>
+     </package>
+
+    <!-- ===== Package pour les actions privées ===== -->
+    <package name="private" extends="base">
+        <default-interceptor-ref name="authenticatedStack" />
 
         <action name="channel_list"
                 class="org.lle.palabres.GestionChannelAction"
                 method="doList">
+            <interceptor-ref name="authenticatedStack" />
             <result name="input">/jsp/channel/list.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">message_list</param>
@@ -53,20 +105,28 @@
         <action name="channel_new"
                 class="org.lle.palabres.GestionChannelAction"
                 method="doCreate">
+            <interceptor-ref name="authenticatedStack" />
             <result name="input">/jsp/channel/new.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">message_list</param>
-                <param name="channelName">${channel.name}</param>
+                <param name="channel">${channel.name}</param>
             </result>
+
         </action>
 
         <action name="message_list"
                 class="org.lle.palabres.GestionChannelAction"
                 method="doListMessage">
+            <interceptor-ref name="authenticatedStack" />
             <result>/jsp/channel/messageList.jsp</result>
+
 
         </action>
 
+        <!-- Actions de démonstration pour les Exceptions -->
+        <action name="demo_functionalException" class="org.lle.palabres.DemoExceptionAction" method="doFunctionalException" />
+        <action name="demo_notFoundException" class="org.lle.palabres.DemoExceptionAction" method="doNotFoundException" />
+        <action name="demo_technicalException" class="org.lle.palabres.DemoExceptionAction" method="doTechnicalException" />
 
     </package>
 </struts>
