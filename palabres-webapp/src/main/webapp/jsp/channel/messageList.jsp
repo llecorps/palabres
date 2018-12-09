@@ -16,8 +16,8 @@
     <h2><s:property value="channel.name" /></h2>
 <div class="row">
     <div class="col-2">
-        <s:a action="message_list" class="btn btn-primary">
-            <s:param name="channel"><s:property value="channel.name" /></s:param>
+        <s:a action="action_ajax" class="btn btn-primary">
+            <s:param name="channel"><s:property value="name" /></s:param>
            <s:text name="nav.refresh" />
         </s:a>
 

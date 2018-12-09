@@ -1,4 +1,4 @@
-package org.lle.palabres;
+package org.lle.palabres.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -10,7 +10,7 @@ import org.example.palabres.model.exception.TechnicalException;
 /**
  * Action de démo pour la gestion des exceptions
  */
-public class DemoExceptionAction extends ActionSupport {
+public class ExceptionAction extends ActionSupport {
 
 
     public String doTechnicalException() throws TechnicalException {

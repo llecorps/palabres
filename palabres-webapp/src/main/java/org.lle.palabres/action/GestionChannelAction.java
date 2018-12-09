@@ -1,4 +1,4 @@
-package org.lle.palabres;
+package org.lle.palabres.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
@@ -113,6 +113,7 @@ if(this.channel != null) {
             this.addActionError("Channel non précisé !");
         }
         return vRetour;
+
     }
 
     public String doCreate() {

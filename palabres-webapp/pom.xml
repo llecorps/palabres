@@ -67,6 +67,11 @@
             <artifactId>struts2-spring-plugin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-json-plugin</artifactId>
+        </dependency>
+
 
         <!-- ===== Tests ===== -->
         <dependency>

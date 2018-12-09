@@ -1,4 +1,4 @@
-package org.lle.palabres;
+package org.lle.palabres.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.example.palabres.business.contract.ManagerFactory;

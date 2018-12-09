@@ -57,21 +57,23 @@
         <action name="index">
             <result>/jsp/index.jsp</result>
         </action>
-        <action name="login" class="org.lle.palabres.loginAction" method="doLogin">
+
+        <action name="login" class="org.lle.palabres.action.loginAction" method="doLogin">
             <result name="input">/jsp/login.jsp</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">channel_list</param>
             </result>
             <result name="error">/jsp/error.jsp</result>
         </action>
-        <action name="logout" class="org.lle.palabres.loginAction" method="doLogout">
+
+        <action name="logout" class="org.lle.palabres.action.loginAction" method="doLogout">
             <result type="redirectAction">
                 <param name="actionName">index</param>
-
             </result>
+
         </action>
         <action name="account"
-                class="org.lle.palabres.GestionUtilisateurAction"
+                class="org.lle.palabres.action.GestionUtilisateurAction"
                 method="doCreate">
             <interceptor-ref name="store">
                 <param name="operationMode">STORE</param>
@@ -84,14 +86,29 @@
             </result>
             <result name="error">/jsp/error.jsp</result>
         </action>
-     </package>
+
+
+        <!-- Action de démonstration pour l'AJAX -->
+        <action name="action_ajax" class="org.lle.palabres.action.DoAjaxAction">
+            <result name="success">/jsp/channel/listAjax.jsp
+
+            </result>
+
+        </action>
+
+
+
+
+</package>
+
+
 
     <!-- ===== Package pour les actions privées ===== -->
     <package name="private" extends="base">
         <default-interceptor-ref name="authenticatedStack" />
 
         <action name="channel_list"
-                class="org.lle.palabres.GestionChannelAction"
+                class="org.lle.palabres.action.GestionChannelAction"
                 method="doList">
             <interceptor-ref name="authenticatedStack" />
             <result name="input">/jsp/channel/list.jsp</result>
@@ -103,7 +120,7 @@
         </action>
 
         <action name="channel_new"
-                class="org.lle.palabres.GestionChannelAction"
+                class="org.lle.palabres.action.GestionChannelAction"
                 method="doCreate">
             <interceptor-ref name="authenticatedStack" />
             <result name="input">/jsp/channel/new.jsp</result>
@@ -115,18 +132,47 @@
         </action>
 
         <action name="message_list"
-                class="org.lle.palabres.GestionChannelAction"
+                class="org.lle.palabres.action.GestionChannelAction"
                 method="doListMessage">
-            <interceptor-ref name="authenticatedStack" />
+            <!--interceptor-ref name="authenticatedStack" /-->
             <result>/jsp/channel/messageList.jsp</result>
 
 
         </action>
 
         <!-- Actions de démonstration pour les Exceptions -->
-        <action name="demo_functionalException" class="org.lle.palabres.DemoExceptionAction" method="doFunctionalException" />
-        <action name="demo_notFoundException" class="org.lle.palabres.DemoExceptionAction" method="doNotFoundException" />
-        <action name="demo_technicalException" class="org.lle.palabres.DemoExceptionAction" method="doTechnicalException" />
+        <action name="demo_functionalException" class="org.lle.palabres.action.ExceptionAction" method="doFunctionalException" />
+        <action name="demo_notFoundException" class="org.lle.palabres.action.ExceptionAction" method="doNotFoundException" />
+        <action name="demo_technicalException" class="org.lle.palabres.action.ExceptionAction" method="doTechnicalException" />
 
     </package>
+
+    <!-- ===== Package pour les actions AJAX ===== -->
+    <package name="ajax" extends="base, json-default">
+
+        <global-results>
+            <result name="error" type="json">
+                <param name="statusCode">400</param>
+                <param name="includeProperties">actionErrors.*,fieldErrors.*</param>
+                <!-- Pour accéder au attributs des classes parentes à la classe d'action -->
+                <param name="ignoreHierarchy">false</param>
+            </result>
+        </global-results>
+
+
+        <!-- Action renvoyant la liste des Projets -->
+        <action name="action_ajax_getListMessage"
+                class="org.lle.palabres.action.DoAjaxAction"
+                method="doAjaxGetListMessage">
+            <result name="success" type="json">
+                <param name="root">listMessage</param>
+
+            </result>
+        </action>
+
+
+
+    </package>
+
+
 </struts>
