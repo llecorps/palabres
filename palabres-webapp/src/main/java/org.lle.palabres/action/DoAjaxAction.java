@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.chat.Channel;
 import org.example.palabres.model.bean.chat.Message;
+import org.example.palabres.model.exception.FunctionalException;
 import org.example.palabres.model.exception.NotFoundException;
 import org.example.palabres.model.exception.TechnicalException;
 
@@ -58,24 +59,38 @@ public class DoAjaxAction extends ActionSupport {
 
     // ==================== Méthodes ====================
     public String execute() {
+
         return ActionSupport.SUCCESS;
     }
 
 
-    /**
-     * Action "AJAX" renvoyant la liste des projets
-     *
-     * @return success
-     */
-    public String doAjaxGetListMessage() throws NotFoundException, TechnicalException {
+
+
+    public String doAjaxGetListMessage() throws NotFoundException, TechnicalException, FunctionalException {
 
         if (channel == null) {
             addActionError("Channel non précisé !");
         } else {
 
             listMessage = managerFactory.getChatManager().getListNewMessage(channel, null);
+
+
         }
             return hasErrors() ? ActionSupport.ERROR : ActionSupport.SUCCESS;
+        }
+
+    public void  doAjaxAddMessage() throws FunctionalException, NotFoundException, TechnicalException{
+
+        if ((channel == null) || (message == null)) {
+
+            addActionError("Message non posté  !");
+
+        } else {
+
+            managerFactory.getChatManager().addMessage(channel, message);
+        }
+
+
         }
 
     }

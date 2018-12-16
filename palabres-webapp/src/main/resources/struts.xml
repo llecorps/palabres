@@ -170,6 +170,15 @@
             </result>
         </action>
 
+        <action name="action_ajax_addMessage"
+                class="org.lle.palabres.action.DoAjaxAction"
+                method="doAjaxAddMessage">
+            <result name="success" type="json">
+                <param name="root">leChannel</param>
+                <param name="root">leMessage</param>
+
+            </result>
+        </action>
 
 
     </package>
