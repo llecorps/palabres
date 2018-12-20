@@ -19,7 +19,11 @@
 <div class="container" >
     <h2><s:property value="channel.name"  /></h2>
     <s:set var="Channel" value="channel.name" />
+    <s:set var="Pseudo" value="#session.utilisateur.pseudo" />
     <s:hidden name="channel" value="%{Channel}" id="leChannel" />
+    <s:hidden name="pseudo" value="%{Pseudo}" id="lePseudo" />
+
+
 
     <div id="channel-messages">
         <div class="media mb-3 message">
@@ -45,32 +49,25 @@
             <input type="checkbox" name="autoRefresh" value="true" id="xx_checkMe"/>
         </div>
     </div>
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-
     $(function() {
         reloadListMessage();
-
         $('#envoyer').click(function() {
 
-            var channel = {
-                channel: jQuery("Random").val()
-            };
-            var message = {
-                message: jQuery("test").val()
-            };
- alert('channel:' + channel +'message:'+message);
+            var channel = $('#leChannel').val();
+            var pseudo = $('#lePseudo').val();
+            var texte = $('#leMessage').val();
 
             var url = "<s:url action="action_ajax_addMessage"/>";
             $.post(url, {
-                channel,
-                message
+                'channel' : channel,
+                'pseudo' : pseudo,
+                'texte' : texte
             }, reloadListMessage);
         });
-
         function reloadListMessage() {
             // URL de l'action AJAX
             var url = "<s:url action="action_ajax_getListMessage"/>";
@@ -79,9 +76,7 @@
             var params = {
                 channel: jQuery("#leChannel").val()
             };
-            alert('channel:' + channel);
             // Action AJAX en POST
-
             jQuery.post(
                     url,
                     params,
@@ -95,8 +90,6 @@
                                             "<br>")
                                             .append('<strong>'+" "+val.author.pseudo+" : "+'</strong>')
                                             .append(val.message)
-
-
                             );
                         });
                         $('i').css('font-size','1em');
@@ -105,54 +98,9 @@
                         alert("Une erreur s'est produite.");
                     });
         }
-
-
-
         //setInterval(reloadListMessage, 4000);
     });
 
-
-
-
-
-
-
-</script>
-<script>
-    function reloadListMessage() {
-        // URL de l'action AJAX
-        var url = "<s:url action="action_ajax_getListMessage"/>";
-
-        // Paramètres de la requête AJAX
-        var params = {
-            channel: jQuery("#leChannel").val()
-        };
-
-        // Action AJAX en POST
-
-        jQuery.post(
-                <s:url action="action_ajax_getListMessage"/>,
-                params,
-                function (data) {
-                    var $listMessage = jQuery("#listMessage");
-                    $listMessage.empty();
-                    jQuery.each(data, function (key, val) {
-
-                        $listMessage.append(
-                                jQuery("<i class='far fa-user fa-2x m-1 mr-3'/>" +
-                                        "<br>")
-                                        .append('<strong>'+" "+val.author.pseudo+" : "+'</strong>')
-                                        .append(val.message)
-
-
-                        );
-                    });
-                    $('i').css('font-size','1em');
-                })
-                .fail(function () {
-                    alert("Une erreur s'est produite.");
-                });
-    }
 </script>
 
 

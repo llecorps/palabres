@@ -166,7 +166,6 @@
                 method="doAjaxGetListMessage">
             <result name="success" type="json">
                 <param name="root">listMessage</param>
-
             </result>
         </action>
 
@@ -174,9 +173,7 @@
                 class="org.lle.palabres.action.DoAjaxAction"
                 method="doAjaxAddMessage">
             <result name="success" type="json">
-                <param name="root">leChannel</param>
-                <param name="root">leMessage</param>
-
+                <param name="root">listMessage</param>
             </result>
         </action>
 

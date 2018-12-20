@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.example.palabres.business.contract.ManagerFactory;
 import org.example.palabres.model.bean.chat.Channel;
 import org.example.palabres.model.bean.chat.Message;
+import org.example.palabres.model.bean.utilisateur.Utilisateur;
 import org.example.palabres.model.exception.FunctionalException;
 import org.example.palabres.model.exception.NotFoundException;
 import org.example.palabres.model.exception.TechnicalException;
@@ -56,10 +57,34 @@ public class DoAjaxAction extends ActionSupport {
         this.message = message;
     }
 
+    // ==================== Méthodes ====================
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public String getTexte() {
+        return texte;
+    }
+
+    public void setTexte(String texte) {
+        this.texte = texte;
+    }
+
+
+    private String pseudo;
+    private String texte;
+
+
+
 
     // ==================== Méthodes ====================
-    public String execute() {
-
+    public String execute() throws NotFoundException, TechnicalException, FunctionalException {
+        listMessage = managerFactory.getChatManager().getListNewMessage(channel, null);
         return ActionSupport.SUCCESS;
     }
 
@@ -72,6 +97,9 @@ public class DoAjaxAction extends ActionSupport {
             addActionError("Channel non précisé !");
         } else {
 
+
+
+
             listMessage = managerFactory.getChatManager().getListNewMessage(channel, null);
 
 
@@ -81,13 +109,25 @@ public class DoAjaxAction extends ActionSupport {
 
     public void  doAjaxAddMessage() throws FunctionalException, NotFoundException, TechnicalException{
 
-        if ((channel == null) || (message == null)) {
+        //if ((channel == null) || (message == null)) {
+
+            if (channel == null)  {
 
             addActionError("Message non posté  !");
 
         } else {
 
-            managerFactory.getChatManager().addMessage(channel, message);
+                Utilisateur vUtilisateur = new Utilisateur();
+
+                vUtilisateur.setPseudo(pseudo);
+
+                Message vMessage = new Message();
+
+                vMessage.setAuthor(vUtilisateur);
+                vMessage.setMessage(texte);
+
+
+                managerFactory.getChatManager().addMessage(channel, vMessage);
         }
 
 
