@@ -44,9 +44,9 @@
         </div>
 
         <div class="col col-lg-3">
-            <button onclick="reloadListMessage()" class="btn btn-primary">Refresh</button>
+            <button id="loadChat" class="btn btn-primary">Refresh</button>
             <span>Auto-refresh</span>
-            <input type="checkbox" name="autoRefresh" value="true" id="xx_checkMe"/>
+            <input type="checkbox" name="autoRefresh"  />
         </div>
     </div>
 </div>
@@ -68,6 +68,12 @@
                 'texte' : texte
             }, reloadListMessage);
         });
+
+        $('#loadChat').click(function() {
+
+            reloadListMessage();
+        });
+
         function reloadListMessage() {
             // URL de l'action AJAX
             var url = "<s:url action="action_ajax_getListMessage"/>";
@@ -97,9 +103,19 @@
                     .fail(function () {
                         alert("Une erreur s'est produite.");
                     });
+
         }
-        //setInterval(reloadListMessage, 4000);
-    });
+
+        $('input[name=autoRefresh]').change(function() {
+            if ($(this).is(':checked')) {
+                 myReload = setInterval(reloadListMessage, 5000);
+            }else{
+                clearInterval(myReload);
+            }
+        });
+
+        });
+
 
 </script>
 
